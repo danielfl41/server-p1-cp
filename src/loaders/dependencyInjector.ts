@@ -1,5 +1,5 @@
-import { Container } from 'typedi';
+import { container } from 'tsyringe';
 import LoggerInstance from './logger';
 export default (() => {
-	Container.set('logger', LoggerInstance);
+	container.register('logger', { useValue: LoggerInstance });
 }) as () => void;

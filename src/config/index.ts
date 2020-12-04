@@ -9,7 +9,7 @@ export const ADDRESS = process.env.ADDRESS ? process.env.ADDRESS : 'localhost';
 export const PROTOCOL = process.env.PROTOCOL ? process.env.PROTOCOL : 'http';
 
 export const DEBUG = process.env.DEBUG ? (process.env.DEBUG === 'true' ? true : false) : false;
-export const LOGS_LEVEL = process.env.LOG_LEVEL || 'silly';
+export const LOGS_LEVEL = process.env.LOGS_LEVEL || 'silly';
 export const IS_DEV = process.env.NODE_ENV
 	? process.env.NODE_ENV === 'development'
 		? true

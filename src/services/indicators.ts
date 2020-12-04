@@ -1,38 +1,95 @@
-import { Inject, Service } from 'typedi';
+import { Indicators } from 'db_infb8090';
+import { inject, injectable } from 'tsyringe';
 import { Logger } from 'winston';
-import { CountriesService } from './countries';
+import { CustomError } from '../controllers/CustomError';
+import { DBController } from '../controllers/DBController';
 
-@Service()
+@injectable()
 export class IndicatorsService {
-	static formatIndicators(rawData: unknown): IndicatorsService.indicators {
+	private static readonly indicatorData: IndicatorsService.IndicatorData = {
+		PIB: {
+			name: 'Producto Interno Bruto',
+			unit: 'US$',
+		},
+		TDA: {
+			name: 'Tasa de desempleo anual',
+			unit: '%',
+		},
+		IFL: {
+			name: 'Inflación',
+			unit: '%',
+		},
+		IVA: {
+			name: 'Impuesto de Valor Añadido',
+			unit: '%',
+		},
+		PRF: {
+			name: 'Presión Fiscal',
+			unit: '%',
+		},
+		SMI: {
+			name: 'Salario Mínimo',
+			unit: 'US$',
+		},
+		TSC: {
+			name: 'Tasa de cambio',
+			unit: 'US$ (por unidad)',
+		},
+		DBI: {
+			name: 'Doing Business Index',
+			unit: 'Posición en el ranking (menos es mejor)',
+		},
+	};
+	private static formatIndicators(
+		indicatorCode: string,
+		year: number,
+		rawData: Indicators.Model,
+	): IndicatorsService.indicators {
+		const indicatorData = this.indicatorData[indicatorCode];
+		if (!indicatorData)
+			throw new CustomError('NOT_FOUND', 'El indicador no se encuentra registrado');
 		const indicators: IndicatorsService.indicators = {
-			code: '',
-			country: CountriesService.formatCountry('') as IndicatorsService.indicators['country'],
-			name: '',
-			unit: '',
-			value: NaN,
-			year: NaN,
+			code: indicatorCode,
+			name: indicatorData.name,
+			unit: indicatorData.unit,
+			value: rawData[indicatorCode],
+			year,
 		};
 		return indicators;
 	}
-	constructor(@Inject('logger') private logger: Logger) {}
 
-	async getIndicators(
+	constructor(
+		@inject('logger') private logger: Logger,
+		@inject(DBController) private DBController: DBController,
+	) {}
+	async getIndicators<P extends number | { from: number; to: number }>(
 		countryCode: string,
 		indicatorCode: string,
-		period: number | { from: number; to: number },
-	): Promise<IndicatorsService.indicators> {
+		period: P,
+	): Promise<P extends number ? IndicatorsService.indicators : IndicatorsService.indicators[]> {
 		this.logger.silly('indicators getIndicators');
-		return IndicatorsService.formatIndicators('');
+		if (typeof period === 'number') {
+			const indicators = await this.DBController.$indicators.fetch(countryCode, period);
+			return IndicatorsService.formatIndicators(indicatorCode, period, indicators) as never;
+		} else {
+			const indicators = await this.DBController.$indicators.list(
+				countryCode,
+				(period as { from: number; to: number }).from,
+				(period as { from: number; to: number }).to,
+			);
+			return indicators.map((entry) =>
+				IndicatorsService.formatIndicators(indicatorCode, entry.year, entry.data),
+			) as never;
+		}
 	}
 }
 export namespace IndicatorsService {
 	export interface indicators {
 		code: string;
-		country: Required<CountriesService.Country>;
 		name: string;
 		unit: string;
 		value: number;
 		year: number;
 	}
+	export type IndicatorData = Record<string, { name: string; unit: string }>;
 }

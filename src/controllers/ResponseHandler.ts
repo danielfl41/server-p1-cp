@@ -15,7 +15,7 @@ export class ResponseHandler {
 	};
 	constructor(private readonly res: Response) {}
 	ok(data: unknown): ResponseHandler.JSONReturn {
-		return this.res.status(200).json({ data });
+		return this.res.status(200).json(data);
 	}
 	errorFromCustom(customError: CustomError): ResponseHandler.JSONReturn {
 		const code = ResponseHandler.customErrorList[customError.type];
@@ -29,7 +29,8 @@ export class ResponseHandler {
 	): ResponseHandler.JSONReturn {
 		const error = ResponseHandler.errors[code];
 		const estructure: ResponseHandler.ErrorStructure = {
-			code: code,
+			ok: false,
+			date: new Date().toISOString(),
 			message: message ? message : error ? error : 'Error',
 			data: data.length > 0 ? data : undefined,
 		};
@@ -42,8 +43,9 @@ export namespace ResponseHandler {
 	export type Errors = Record<number, string>;
 	export type CustomErrorList = Record<CustomError.type, number>;
 	export interface ErrorStructure {
-		code: code;
+		ok: false;
 		message: string;
 		data: unknown;
+		date: string;
 	}
 }

@@ -1,10 +1,6 @@
-# Proyecto REST
+# DB_INFB8090-1
 
-El presente repositorio contiene la tarea Proyecto REST del ramo computación paralela y distribuida (INFB8090) de la Universidad Tecnológica Metropolitana.
-
-Consiste de un servidor en express con un servicio rest que entrega información de paises e indicadores comerciales de los mismos.
-
-[TOC]
+La presente librería crea y pobla una base de datos **PostgreSQL** con países y sus respectivos indicadores económicos.
 
 ## Requerimientos
 
@@ -17,49 +13,39 @@ Consiste de un servidor en express con un servicio rest que entrega información
 
 1. Clonar el proyecto y ejecutar:
 
-	```bash
-	npm install
-	```
-
-2. Configurar el archivo **.env**  (ver el apartado [ENV File](##env-File) para más detalle)
-
-3. Ejecutar el siguiente comando para crear y poblar la base de datos:
-
-   ```bash
-   npm run create_db
-   ```
-
-   Cabe destacar que la creación de la base datos solo es posible en versiones de node < a la **14.0.0**, en posteriores debe ser creada/eliminada manualmente antes de ejecutar el comando.
+    ```bash
+    npm install
+    ```
 
 ## Uso
 
-Para iniciar el servidor ejecutar:
+Para compilar:
 
+```bash
+npm run build
 ```
-npm run start
+
+Para ejecutar lint:
+
+```bash
+npm run lint
 ```
 
+Para iniciar en modo desarrollo:
 
+```bash
+npm run serve
+```
 
 ## ENV File
 
 | Variable     | Descripción                                                  |
 | ------------ | ------------------------------------------------------------ |
-| PORT         | Puerto en el que se ejecutará el servidor                    |
-| ADDRESS      | Dirección en la cual se ejecutará el servidor                |
-| PROTOCOL     | Protocolo de comunicación                                    |
 | DEBUG        | Modo debug, algunos logs no serán enviados entre otros comportamientos |
 | LOGS_LEVEL   | Nivel de los logs a ser mostrados, se utiliza de referencia los niveles establecidos por la librería [winston](https://github.com/winstonjs/winston#Logging%20Levels) para node |
 | NODE_ENV     | Tipo de *environment*                                        |
-| ENDPOINT_API | Endpoint de la api                                           |
-| API_VERSION  | Versión de la API                                            |
-| API_APP      | Identificador de Credencial de Autenticación                 |
-| API_KEY      | Llave de Credencial de Autenticación                         |
 | PG_HOST      | Dirección en la cual se encuentra la base de datos           |
 | PG_PORT      | Puerto en el cual se encuentra la base datos                 |
 | PG_DATABASE  | Nombre de la base de datos a ser utilizada                   |
 | PG_USER      | Usuario de la base datos                                     |
 | PG_PASSWORD  | Contraseña de la base datos                                  |
-
-
-

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import semver from 'semver';
 import { PG_DATABASE, PG_HOST, PG_PASSWORD, PG_PORT, PG_USER } from './config';
 import DBChecker from './DBChecker';
 import { Countries } from './models/Countries';
@@ -33,8 +34,10 @@ async function main(config: Config) {
 	let totalIndicators = 0;
 	logger.info('🏁 Started');
 	const dbChecker = new DBChecker({ host, password, port, user }, database);
-	logger.log('Creating DB', database);
-	await dbChecker.checkRemoveAndCreate();
+	if (semver.lt(process.version, '14.0.0')) {
+		logger.log('Creating DB', database);
+		await dbChecker.checkRemoveAndCreate();
+	} else logger.info(`Cannot create the database with this version of node (${process.version})`);
 	logger.log('Creating table countries');
 	const countries = await Countries.create();
 	logger.log('Creating table indicators');

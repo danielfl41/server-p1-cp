@@ -30,7 +30,7 @@ export class Logger {
 		if (DEBUG && Logger.canError) console.error('❌', `[${this.scope}]	`, ...c);
 	}
 	info(...c: unknown[]): void {
-		if (DEBUG && Logger.canInfo) console.log('ℹ️ ', `[${this.scope}]	`, ...c);
+		if (Logger.canInfo) console.log('ℹ️ ', `[${this.scope}]	`, ...c);
 	}
 	log(...c: unknown[]): void {
 		if (DEBUG && Logger.canLog) console.log('> ', `[${this.scope}]	`, ...c);

@@ -1,0 +1,599 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Api Documentation",
+		"description": "Api Documentation",
+		"termsOfService": "urn:tos",
+		"contact": {},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0"
+		},
+		"version": "1.0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8080/api/v1",
+			"description": "Inferred Url"
+		}
+	],
+	"tags": [
+		{
+			"name": "country-rest",
+			"description": "Country Rest"
+		},
+		{
+			"name": "indicator-rest",
+			"description": "Indicator Rest"
+		}
+	],
+	"paths": {
+		"/countries/all": {
+			"get": {
+				"tags": ["country-rest"],
+				"summary": "Obtiene la información de todos los paises del sistema.",
+				"operationId": "allUsingGET",
+				"parameters": [
+					{
+						"name": "X-API-APP",
+						"in": "header",
+						"description": "Identificador de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"description": "Llave de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Objeto con la información del país",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/country"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "La petición es inválida.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "No está autorizado a consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Las credenciales proporcionadas no permiten consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"412": {
+						"description": "Ocurrió un error de validación",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Error interno del servidor.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/countries/{code}/info": {
+			"get": {
+				"tags": ["country-rest"],
+				"summary": "Obtiene la información del país.",
+				"operationId": "byCodeUsingGET",
+				"parameters": [
+					{
+						"name": "X-API-APP",
+						"in": "header",
+						"description": "Identificador de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"description": "Llave de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "code",
+						"in": "path",
+						"description": "Código ISO 3166-1 alpha-2 del país",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Objeto con la información del país",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/country"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "La petición es inválida.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "No está autorizado a consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Las credenciales proporcionadas no permiten consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"412": {
+						"description": "Ocurrió un error de validación",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Error interno del servidor.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/indicators/info": {
+			"post": {
+				"tags": ["indicator-rest"],
+				"summary": "Obtiene la información de un(os) indicador(es).",
+				"operationId": "initUsingPOST",
+				"parameters": [
+					{
+						"name": "X-API-APP",
+						"in": "header",
+						"description": "Identificador de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"description": "Llave de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IndicatorRequest"
+							}
+						},
+						"application/json;charset=UTF-8": {
+							"schema": {
+								"$ref": "#/components/schemas/IndicatorRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Objeto con la información del indicador",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/indicator"
+									}
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "La petición es inválida.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "No está autorizado a consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Las credenciales proporcionadas no permiten consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"412": {
+						"description": "Ocurrió un error de validación",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Error interno del servidor.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/indicators/{countryCode}/{indicatorCode}/{year}/info": {
+			"get": {
+				"tags": ["indicator-rest"],
+				"summary": "Obtiene la información de un indicador.",
+				"operationId": "initUsingGET",
+				"parameters": [
+					{
+						"name": "X-API-APP",
+						"in": "header",
+						"description": "Identificador de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"description": "Llave de Credencial de Autenticación",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "code",
+						"in": "path",
+						"description": "Código ISO 3166-1 alpha-2 del país",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "indicatorCode",
+						"in": "path",
+						"description": "Código del indicador descrito en el proyecto",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "year",
+						"in": "path",
+						"description": "Año de consulta",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Objeto con la información del indicador",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/indicator"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "La petición es inválida.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "No está autorizado a consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Las credenciales proporcionadas no permiten consumir este servicio.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"412": {
+						"description": "Ocurrió un error de validación",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Error interno del servidor.",
+						"content": {
+							"application/json;charset=UTF-8": {
+								"schema": {
+									"$ref": "#/components/schemas/error"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"IndicatorRequest": {
+				"title": "IndicatorRequest",
+				"required": ["countryCode", "endYear", "indicatorCode", "startYear"],
+				"type": "object",
+				"properties": {
+					"countryCode": {
+						"type": "string",
+						"description": "Código Alpha 2 del país según el código ISO 3166-1",
+						"example": "CL"
+					},
+					"endYear": {
+						"type": "integer",
+						"description": "Año de termino de la consulta",
+						"format": "int32",
+						"example": 2019
+					},
+					"indicatorCode": {
+						"type": "string",
+						"description": "Código del indicador descrito en el proyecto",
+						"example": "PIB"
+					},
+					"startYear": {
+						"type": "integer",
+						"description": "Año de inicio de la consulta",
+						"format": "int32",
+						"example": 2017
+					}
+				}
+			},
+			"country": {
+				"title": "country",
+				"required": ["abbr", "code", "currencyCode", "currencyName", "lang", "name"],
+				"type": "object",
+				"properties": {
+					"abbr": {
+						"type": "string",
+						"description": "Código Alpha 3 del país según el código ISO 3166-1",
+						"example": "CHL"
+					},
+					"code": {
+						"type": "string",
+						"description": "Código Alpha 2 del país según el código ISO 3166-1",
+						"example": "CL"
+					},
+					"currencyCode": {
+						"type": "string",
+						"description": "Código de la moneda nacional según el código ISO 4217",
+						"example": "CLP"
+					},
+					"currencyName": {
+						"type": "string",
+						"description": "Nombre de la moneda nacional según el código ISO 4217",
+						"example": "Peso chileno"
+					},
+					"lang": {
+						"type": "string",
+						"description": "Código ISO 639-1 que representa el idoma",
+						"example": "es"
+					},
+					"name": {
+						"type": "string",
+						"description": "Nombre del país según el código ISO 3166-1",
+						"example": "Chile"
+					}
+				}
+			},
+			"error": {
+				"title": "error",
+				"required": ["date", "message", "ok"],
+				"type": "object",
+				"properties": {
+					"date": {
+						"type": "string",
+						"description": "Fecha del message",
+						"example": "2018-11-21 13:21:52"
+					},
+					"message": {
+						"type": "string",
+						"description": "Mensaje de la respuesta",
+						"example": "Error desconocido"
+					},
+					"ok": {
+						"type": "boolean",
+						"description": "Estado del objeto",
+						"example": false
+					}
+				}
+			},
+			"indicator": {
+				"title": "indicator",
+				"required": ["code", "country", "description", "name", "unit", "value", "year"],
+				"type": "object",
+				"properties": {
+					"code": {
+						"type": "string",
+						"description": "Código del indicador descrito en el proyecto",
+						"example": "PIB"
+					},
+					"country": {
+						"description": "País asociado al indicador",
+						"$ref": "#/components/schemas/country"
+					},
+					"description": {
+						"type": "string",
+						"description": "Descripción del indicador descrito en el proyecto",
+						"example": "En macroeconomía, el producto interno bruto (PIB), conocido también como producto interior o producto bruto interno (PBI), es una magnitud macroeconómica que expresa el valor monetario de la producción de bienes y servicios de demanda final de un país o región durante un período determinado, normalmente de un año o trimestrales."
+					},
+					"name": {
+						"type": "string",
+						"description": "Nombre del indicador descrito en el proyecto",
+						"example": "Producto Interno Bruto"
+					},
+					"unit": {
+						"type": "string",
+						"description": "Unidad del indicador descrito en el proyecto",
+						"example": "US$"
+					},
+					"value": {
+						"type": "number",
+						"description": "Valor del indicador descrito en el proyecto",
+						"format": "bigdecimal",
+						"example": 282318159740
+					},
+					"year": {
+						"type": "integer",
+						"description": "Año del indicador",
+						"format": "int32",
+						"example": 2019
+					}
+				}
+			}
+		}
+	}
+}

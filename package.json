@@ -4,6 +4,7 @@
 	"description": "Proyecto REST. Computación Paralela y Distribuida",
 	"main": "src/app.ts",
 	"scripts": {
+		"preinstall": "cd DB_INFB8090-1 && npm install",
 		"lint": "eslint . --ext .ts",
 		"start": "npm run lint && nodemon",
 		"build": "tsc --project ./",
@@ -20,8 +21,9 @@
 		"express": "^4.17.1",
 		"pg-promise": "^10.8.1",
 		"reflect-metadata": "^0.1.13",
+		"ts-node": "^9.1.0",
 		"tsyringe": "^4.4.0",
-		"typescript": "^4.0.5",
+		"typescript": "^4.1.2",
 		"winston": "^3.3.3"
 	},
 	"homepage": "https://github.com/danielfl41/server-p1-cp#readme",
